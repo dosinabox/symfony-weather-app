@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Forecast;
 use App\Infrastructure\Weather\OpenWeather\OpenWeatherProvider;
 use App\Infrastructure\Weather\WeatherAPI\WeatherAPIProvider;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +16,7 @@ class WeatherController extends AbstractController
     public function __construct(
         private readonly OpenWeatherProvider $provider1,
         private readonly WeatherAPIProvider $provider2,
+        protected readonly EntityManagerInterface $entityManager
     ) {
     }
 
@@ -24,10 +27,12 @@ class WeatherController extends AbstractController
 
         if ($city) {
             try {
-                $temp1 = $this->provider1->getForecast($city);
-                $temp2 = $this->provider2->getForecast($city);
+                $temp1 = $this->provider1->getForecast($city)->getTemp();
+                $temp2 = $this->provider2->getForecast($city)->getTemp();
 
                 $tempAverage = ($temp1 + $temp2) / 2;
+
+                $history = $this->entityManager->getRepository(Forecast::class)->findBy(['city' => $city]);
             } catch (\Throwable $exception) {
                 $error = $exception->getMessage();
             }
@@ -38,6 +43,7 @@ class WeatherController extends AbstractController
             'temp1' => $temp1 ?? null,
             'temp2' => $temp2 ?? null,
             'tempAverage' => $tempAverage ?? null,
+            'history' => $history ?? null,
             'error' => $error ?? null,
         ]);
     }
