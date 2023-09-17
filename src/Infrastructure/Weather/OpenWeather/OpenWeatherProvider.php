@@ -3,22 +3,24 @@
 namespace App\Infrastructure\Weather\OpenWeather;
 
 use App\Domain\Weather\WeatherProviderInterface;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+use App\Infrastructure\Weather\CommonWeatherProvider;
 
-final class OpenWeatherProvider implements WeatherProviderInterface
+final class OpenWeatherProvider extends CommonWeatherProvider implements WeatherProviderInterface
 {
     public function getApiUrl(): string
     {
-        return env('OPENWEATHER_API_URL');
+        return $this->parameters->get('weather.api.url.weatherapi');
     }
 
     public function getApiKey(): string
     {
-        return env('OPENWEATHER_API_KEY');
+        return $this->parameters->get('weather.api.key.weatherapi');
     }
 
     public function getForecast(string $city)
     {
-        $requestUrl = sprintf($this->getApiUrl(), $city, $this->getApiKey());
+        $content = $this->getContent($city, $this->getApiUrl(), $this->getApiKey());
+
+        return $content['current']['temp_c'];
     }
 }
