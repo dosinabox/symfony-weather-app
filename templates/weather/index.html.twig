@@ -4,13 +4,10 @@
 
 {% block body %}
 <form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
 
     <h1 class="h3 mb-3 font-weight-normal">Please provide your city</h1>
 
-    <label for="inputEmail">City</label>
+    <label for="inputCity">City</label>
     <input name="city" id="inputCity" class="form-control" required>
 
     <button class="btn btn-lg btn-primary" type="submit">
@@ -19,9 +16,13 @@
 
     <br>
     <br>
-    {% if forecast %}
-        Current weather:
-        <div class="alert alert-danger">{{ forecast }}</div>
+    {% if tempAverage and city %}
+        Current weather in {{ city }}:
+        <div class="alert alert-danger">{{ temp1 }} °C (OpenWeatherMap.org)</div>
+        <div class="alert alert-danger">{{ temp2 }} °C (WeatherAPI.com)</div>
+        <div class="alert alert-danger">{{ tempAverage }} °C (average)</div>
+    {% elseif error %}
+        <div class="alert alert-danger">{{ error }}</div>
     {% endif %}
 </form>
 {% endblock %}

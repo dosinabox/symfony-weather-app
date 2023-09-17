@@ -24,17 +24,20 @@ class WeatherController extends AbstractController
 
         if ($city) {
             try {
-                $forecast1 = $this->provider1->getForecast($city);
-                $forecast2 = $this->provider2->getForecast($city);
+                $temp1 = $this->provider1->getForecast($city);
+                $temp2 = $this->provider2->getForecast($city);
 
-                $forecast = ($forecast1 + $forecast2) / 2;
+                $tempAverage = ($temp1 + $temp2) / 2;
             } catch (\Throwable $exception) {
                 $error = $exception->getMessage();
             }
         }
 
         return $this->render('weather/index.html.twig', [
-            'forecast' => $forecast ?? null,
+            'city' => $city ?? null,
+            'temp1' => $temp1 ?? null,
+            'temp2' => $temp2 ?? null,
+            'tempAverage' => $tempAverage ?? null,
             'error' => $error ?? null,
         ]);
     }

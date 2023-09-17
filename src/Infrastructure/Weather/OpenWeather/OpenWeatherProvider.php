@@ -9,18 +9,18 @@ final class OpenWeatherProvider extends CommonWeatherProvider implements Weather
 {
     public function getApiUrl(): string
     {
-        return $this->parameters->get('weather.api.url.weatherapi');
+        return $this->parameters->get('weather.api.url.openweather');
     }
 
     public function getApiKey(): string
     {
-        return $this->parameters->get('weather.api.key.weatherapi');
+        return $this->parameters->get('weather.api.key.openweather');
     }
 
     public function getForecast(string $city)
     {
         $content = $this->getContent($city, $this->getApiUrl(), $this->getApiKey());
 
-        return $content['current']['temp_c'];
+        return $content['main']['temp'];
     }
 }
