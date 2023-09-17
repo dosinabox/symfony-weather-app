@@ -6,6 +6,7 @@ use App\Domain\Weather\Exception\CityNotFoundException;
 use App\Domain\Weather\Exception\ServiceUnavailableException;
 use App\Domain\Weather\Exception\UnauthorizedException;
 use App\Entity\Forecast;
+use DivisionByZeroError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -14,7 +15,7 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class CommonWeatherProvider
+trait CommonWeatherProviderTrait
 {
     public function __construct(
         protected readonly HttpClientInterface $client,
@@ -69,5 +70,14 @@ class CommonWeatherProvider
         $this->entityManager->flush();
 
         return $forecast;
+    }
+
+    public function getAverageTemp(float ...$numbers): float
+    {
+        try {
+            return array_sum($numbers) / count($numbers);
+        } catch (DivisionByZeroError $error) {
+            return 0;
+        }
     }
 }

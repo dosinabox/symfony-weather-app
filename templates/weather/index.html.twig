@@ -16,10 +16,11 @@
 
     <br>
     <br>
-    {% if tempAverage and city %}
+    {% if tempAverage and city and forecasts %}
         Current weather in {{ city }}:
-        <div class="alert alert-danger">{{ temp1 }} °C (OpenWeatherMap.org)</div>
-        <div class="alert alert-danger">{{ temp2 }} °C (WeatherAPI.com)</div>
+        {% for forecast in forecasts %}
+            <div class="alert alert-danger">{{ forecast.temp }} °C ({{ forecast.provider }})</div>
+        {% endfor %}
         <div class="alert alert-danger"><b>{{ tempAverage }} °C (average)</b></div>
         {% if history %}
             <br>

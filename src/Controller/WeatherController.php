@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Forecast;
+use App\Infrastructure\Weather\CommonWeatherProviderTrait;
 use App\Infrastructure\Weather\OpenWeather\OpenWeatherProvider;
 use App\Infrastructure\Weather\WeatherAPI\WeatherAPIProvider;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class WeatherController extends AbstractController
 {
+    use CommonWeatherProviderTrait;
+
     public function __construct(
         private readonly OpenWeatherProvider $provider1,
         private readonly WeatherAPIProvider $provider2,
@@ -27,10 +30,15 @@ class WeatherController extends AbstractController
 
         if ($city) {
             try {
-                $temp1 = $this->provider1->getForecast($city)->getTemp();
-                $temp2 = $this->provider2->getForecast($city)->getTemp();
+                $forecasts = [
+                    $forecast1 = $this->provider1->getForecast($city),
+                    $forecast2 = $this->provider2->getForecast($city),
+                ];
 
-                $tempAverage = ($temp1 + $temp2) / 2;
+                $tempAverage = $this->getAverageTemp(
+                    $forecast1->getTemp(),
+                    $forecast2->getTemp(),
+                );
 
                 $history = $this->entityManager->getRepository(Forecast::class)->findBy(['city' => $city]);
             } catch (\Throwable $exception) {
@@ -40,8 +48,7 @@ class WeatherController extends AbstractController
 
         return $this->render('weather/index.html.twig', [
             'city' => $city ?? null,
-            'temp1' => $temp1 ?? null,
-            'temp2' => $temp2 ?? null,
+            'forecasts' => $forecasts ?? null,
             'tempAverage' => $tempAverage ?? null,
             'history' => $history ?? null,
             'error' => $error ?? null,

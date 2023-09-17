@@ -6,7 +6,7 @@ use App\Domain\Weather\Exception\ServiceUnavailableException;
 use App\Domain\Weather\Exception\UnauthorizedException;
 use App\Domain\Weather\WeatherProviderInterface;
 use App\Entity\Forecast;
-use App\Infrastructure\Weather\CommonWeatherProvider;
+use App\Infrastructure\Weather\CommonWeatherProviderTrait;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -14,8 +14,10 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-final class WeatherAPIProvider extends CommonWeatherProvider implements WeatherProviderInterface
+final class WeatherAPIProvider implements WeatherProviderInterface
 {
+    use CommonWeatherProviderTrait;
+
     public function getProviderName(): string
     {
         return 'WeatherAPI.com';
