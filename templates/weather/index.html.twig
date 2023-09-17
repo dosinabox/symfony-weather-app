@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Weather{% endblock %}
+
+{% block body %}
+<form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <h1 class="h3 mb-3 font-weight-normal">Please provide your country and city</h1>
+
+    <label for="inputEmail">Country</label>
+    <input value="Poland" name="country" id="inputCountry" class="form-control" required>
+
+    <label for="inputEmail">City</label>
+    <input value="Warsaw" name="city" id="inputCity" class="form-control" required>
+
+    <button class="btn btn-lg btn-primary" type="submit">
+        Send
+    </button>
+
+    <br>
+    <br>
+    {% if forecast %}
+        Current weather:
+        <div class="alert alert-danger">{{ forecast }}</div>
+    {% endif %}
+</form>
+{% endblock %}
