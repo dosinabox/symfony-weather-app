@@ -20,13 +20,13 @@
         Current weather in {{ city }}:
         <div class="alert alert-danger">{{ temp1 }} °C (OpenWeatherMap.org)</div>
         <div class="alert alert-danger">{{ temp2 }} °C (WeatherAPI.com)</div>
-        <div class="alert alert-danger">{{ tempAverage }} °C (average)</div>
+        <div class="alert alert-danger"><b>{{ tempAverage }} °C (average)</b></div>
         {% if history %}
             <br>
             History for {{ city }}:
             <ul>
                 {% for log in history %}
-                    <li>{{ log.time | date('d-m-Y, h:m:s') }}: {{ log.temp }} °C</li>
+                    <li>{{ log.time | date('d-m-Y, H:i:s') }}: {{ log.temp }} °C ({{ log.provider }})</li>
                 {% endfor %}
             </ul>
         {% endif %}

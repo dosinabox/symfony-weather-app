@@ -58,11 +58,11 @@ class CommonWeatherProvider
         return json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
     }
 
-    public function createForecast(string $city, float $temp): Forecast
+    public function createForecast(string $city, float $temp, string $provider): Forecast
     {
         $forecast = new Forecast();
         $forecast->setCity($city);
-        $forecast->setProvider((new \ReflectionClass($this))->getShortName());
+        $forecast->setProvider($provider);
         $forecast->setTemp($temp);
         $forecast->setTime(new \DateTime());
         $this->entityManager->persist($forecast);

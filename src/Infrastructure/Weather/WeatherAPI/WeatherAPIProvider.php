@@ -16,6 +16,11 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class WeatherAPIProvider extends CommonWeatherProvider implements WeatherProviderInterface
 {
+    public function getProviderName(): string
+    {
+        return 'WeatherAPI.com';
+    }
+
     /**
      * @return string
      * @throws ContainerExceptionInterface
@@ -53,6 +58,6 @@ final class WeatherAPIProvider extends CommonWeatherProvider implements WeatherP
     {
         $content = $this->getContent($city, $this->getApiUrl(), $this->getApiKey());
 
-        return $this->createForecast($city, $content['current']['temp_c']);
+        return $this->createForecast($city, $content['current']['temp_c'], $this->getProviderName());
     }
 }
