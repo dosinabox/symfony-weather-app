@@ -23,24 +23,14 @@ final class WeatherAPIProvider implements WeatherProviderInterface
         return 'WeatherAPI.com';
     }
 
-    /**
-     * @return string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
     public function getApiUrl(): string
     {
-        return $this->parameters->get('weather.api.url.weatherapi');
+        return $_ENV['WEATHERAPI_API_URL'];
     }
 
-    /**
-     * @return string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
     public function getApiKey(): string
     {
-        return $this->parameters->get('weather.api.key.weatherapi');
+        return $_ENV['WEATHERAPI_API_KEY'];
     }
 
     /**

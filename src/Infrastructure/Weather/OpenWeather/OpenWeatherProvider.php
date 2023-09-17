@@ -23,24 +23,14 @@ final class OpenWeatherProvider implements WeatherProviderInterface
         return 'OpenWeatherMap.org';
     }
 
-    /**
-     * @return string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
     public function getApiUrl(): string
     {
-        return $this->parameters->get('weather.api.url.openweather');
+        return $_ENV['OPENWEATHER_API_URL'];
     }
 
-    /**
-     * @return string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
     public function getApiKey(): string
     {
-        return $this->parameters->get('weather.api.key.openweather');
+        return $_ENV['OPENWEATHER_API_KEY'];
     }
 
     /**

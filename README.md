@@ -6,9 +6,11 @@ Simple weather app built on the [Symfony 6.3.4](https://symfony.com) web framewo
 
 * Docker environment ready to use
 * Two APIs for forecast data (OpenWeatherMap.org and WeatherAPI.com)
+* Common interface and trait for easier integrations of other APIs
 * Self-hosted Sentry integration
+* GitHub Actions workflow (build Docker images, validate Composer packages)
 * Error handling (HTTP response codes and exceptions)
-* All requests will be saved in the database (PostgreSQL)
+* Saving all requests in the database (PostgreSQL)
 
 <img src="https://i.imgur.com/nV5rUGQ.png" width="450" alt="screenshot"/>
 

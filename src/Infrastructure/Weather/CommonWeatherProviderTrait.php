@@ -19,7 +19,6 @@ trait CommonWeatherProviderTrait
 {
     public function __construct(
         protected readonly HttpClientInterface $client,
-        protected readonly ContainerBagInterface $parameters,
         protected readonly EntityManagerInterface $entityManager
     ) {
     }
