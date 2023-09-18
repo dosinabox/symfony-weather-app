@@ -19,6 +19,15 @@ services:
       MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
       MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
 
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+
   caddy:
     image: ${IMAGES_PREFIX:-}app-caddy
     depends_on:
@@ -70,6 +79,8 @@ volumes:
   php_socket:
   caddy_data:
   caddy_config:
+  cache:
+    driver: local
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
 
